@@ -1,3 +1,5 @@
+"use strict";
+
 module("zip code retriever");
 test("form view model", function() {
     ok(AddressViewModel, "A viewModel for our form should exist");
@@ -49,4 +51,20 @@ test("should set city info based off search result", function() {
     equal(address.city(), "bam");
     equal(address.state(), "foo");
     equal(address.county(), "bar");
+});
+
+test("should be able to clear the results", function() {
+    var address = new AddressViewModel();
+
+    address.zip(12345);
+    address.city("foo");
+    address.state("bar");
+    address.county("bam");
+
+    address.clear();
+
+    equal(address.zip(), "");
+    equal(address.city(), "");
+    equal(address.state(), "");
+    equal(address.county(), "");
 });

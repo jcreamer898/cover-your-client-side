@@ -48,3 +48,9 @@ AddressViewModel.prototype.fetched = function(data) {
         this.county(cityInfo.adminName2);
     }
 };
+
+AddressViewModel.prototype.clear = function() {
+    ["zip", "city", "state", "county"].forEach(function(field) {
+        this[field]("");
+    }.bind(this));
+};
