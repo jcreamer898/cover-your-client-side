@@ -1,0 +1,18 @@
+{
+  "name": "demos",
+  "version": "0.0.1",
+  "description": "",
+  "main": "Gruntfile.js",
+  "private": true,
+  "author": "Jonathan Creamer",
+  "license": "MIT",
+  "dependencies": {
+    "grunt": "",
+    "grunt-contrib-qunit": "",
+    "grunt-contrib-jshint": "",
+    "grunt-plato": ""
+  },
+  "devDependencies": {
+    "grunt-blanket-qunit": "^0.2.0"
+  }
+}

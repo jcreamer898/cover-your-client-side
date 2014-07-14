@@ -1,0 +1,30 @@
+<html>
+    <head>
+        <title>Zip Finder Demo</title>
+    </head>
+    <body>
+        <form>
+            <div data-bind="with: address">
+                <label>Zip</label>
+                <input type="text" name="zip" data-bind="value: zip" />
+
+                <fieldgroup data-bind="visible: isLocated">
+                    <label>City</label>
+                    <input type="text" name="city" data-bind="value: city" />
+
+                    <label>State</label>
+                    <input type="text" name="state" data-bind="value: state" />
+
+                    <label>County</label>
+                    <input type="text" name="county" data-bind="value: county" />
+                </fieldgroup>
+            </div>
+        </form>
+
+        <script src="js/lib/sinonjs/sinon.js"></script>
+        <script src="js/lib/jquery/dist/jquery.js"></script>
+        <script src="js/lib/knockout.js/knockout.js"></script>
+        <script src="js/app/zip.js" data-cover></script>
+        <script src="js/app/app.js" data-cover></script>
+    </body>
+</html>
