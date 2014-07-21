@@ -1,70 +1,99 @@
 "use strict";
 
-module("zip code retriever");
-test("form view model", function() {
-    ok(AddressViewModel, "A viewModel for our form should exist");
+module("zip code searcher");
+test("should be a zip code search view model", function() {
+    ok(AddressViewModel);
 });
 
-module("address view model");
-test("should only try to get data if there's 5 chars", function() {
-    var address = new AddressViewModel();
+test("should validate zip codes", function() {
+    var vm = new AddressViewModel(), 
+        valid;
+
+    valid = vm.isValid("3717a");
+
+    ok(!valid, "this is an invalid zip code");
+
+    valid = vm.isValid(37179);
+
+    ok(valid, "this is a valid zip code");
+});
+
+test("should check the length of zip codes", function() {
+    var vm = new AddressViewModel(), 
+        valid;
+
+    valid = vm.isLongEnough(3717);
+
+    ok(!valid, "this is too short");
+
+
+    valid = vm.isLongEnough(37179);
+
+    ok(valid, "this is a valid zip code");
+});
+
+test("should search for zip codes if a zip is valid", function() {
+    var vm = new AddressViewModel(),
+        promise;
 
     sinon.stub(jQuery, "ajax").returns({
         done: $.noop
     });
 
-    address.zip(3717);
+    promise = vm.fetch(37179).done;
 
-    ok(!jQuery.ajax.calledOnce);
-
-    address.zip(37179);
-
-    ok(jQuery.ajax.calledOnce);
+    ok(jQuery.ajax.calledOnce, "should try to fetch");
 
     jQuery.ajax.restore();
 });
 
-test("should show city state data if a zip code is found", function() {
-    var address = new AddressViewModel();
+test("should not search for zip codes if a zip is invalid", function() {
+    var vm = new AddressViewModel();
 
-    ok(!address.isLocated());
-
-    address.zip(12345);
-    address.city("foo");
-    address.state("bar");
-    address.county("bam");
-
-    ok(address.isLocated());
+    throws(function() { 
+        vm.fetch("abc"); 
+    }, "an exception will be thrown when there is no zip passed to fetch");
 });
 
-test("should set city info based off search result", function() {
-    var address = new AddressViewModel();
+asyncTest("should set the city state and county with a valid zip", function() {
+    var vm = new AddressViewModel(),
+        promise;
 
-    address.fetched({
-        postalcodes: [{
-            adminCode1: "foo",
-            adminName2: "bar",
-            placeName: "bam"
-        }]
+    sinon.stub(jQuery, "ajax").returns({
+        done: function(callback) {
+            callback({
+                postalcodes: [{
+                    adminCode1: "foo",
+                    adminName2: "bar",
+                    placeName: "bam"
+                }]
+            });
+
+            ok(vm.isLocated(), "should set an isLocated flag to true");
+            equal(vm.city(), "bam");
+            equal(vm.state(), "foo");
+            equal(vm.county(), "bar");
+
+            start();
+            jQuery.ajax.restore();
+        }
     });
 
-    equal(address.city(), "bam");
-    equal(address.state(), "foo");
-    equal(address.county(), "bar");
+    vm.zip(37179);
 });
 
 test("should be able to clear the results", function() {
-    var address = new AddressViewModel();
+    var vm = new AddressViewModel();
 
-    address.zip(12345);
-    address.city("foo");
-    address.state("bar");
-    address.county("bam");
+    vm.zip(12345);
+    vm.city("foo");
+    vm.state("bar");
+    vm.county("bam");
 
-    address.clear();
+    vm.clear();
 
-    equal(address.zip(), "");
-    equal(address.city(), "");
-    equal(address.state(), "");
-    equal(address.county(), "");
+    equal(vm.zip(), "");
+    equal(vm.city(), "");
+    equal(vm.state(), "");
+    equal(vm.county(), "");
 });

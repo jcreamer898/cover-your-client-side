@@ -1,40 +1,38 @@
-var AddressViewModel = function(options) {
-    options = options || {};
+function AddressViewModel() {
+    this.zip = ko.observable();
+    this.city = ko.observable();
+    this.state = ko.observable();
+    this.county = ko.observable();
 
-    this.zip = ko.observable(options.zip);
-    this.city = ko.observable(options.city);
-    this.state = ko.observable(options.state);
-    this.county = ko.observable(options.county);
-
-    this.isLocated = ko.computed(function() {
-        return this.city() && this.state() && this.county() && this.zip();
+    this.isLocated = ko.computed(function() { 
+        return this.zip() && this.city() && this.county() && this.state();
     }, this);
 
-    this.initialize();
+    this.zip.subscribe(this.zipChanged.bind(this));
+}
+
+AddressViewModel.prototype.isLongEnough = function(zip) {
+    return zip.toString().length === 5;
 };
 
-AddressViewModel.prototype.initialize = function() {
-    this.zip.subscribe(this.zipChanged, this);
-};
-
-AddressViewModel.prototype.zipChanged = function(value) {
-    if (value.toString().length === 5) {
-        this.fetch(value);
-    }
+AddressViewModel.prototype.isValid = function(zip) {
+    return !isNaN(Number(zip));
 };
 
 AddressViewModel.prototype.fetch = function(zip) {
-    var baseUrl = "http://www.geonames.org/postalCodeLookupJSON";
+    if ( !this.isValid(zip) ) {
+        throw new Error("Invalid zip code");
+    }
 
-    $.ajax({
-        url: baseUrl,
+    return $.ajax({
+        url: "http://www.geonames.org/postalCodeLookupJSON",
         data: {
             "postalcode": zip,
             "country": "us"
         },
         type: "GET",
         dataType: "JSONP"
-    }).done(this.fetched.bind(this));
+    });
 };
 
 AddressViewModel.prototype.fetched = function(data) {
@@ -46,6 +44,17 @@ AddressViewModel.prototype.fetched = function(data) {
         this.city(cityInfo.placeName);
         this.state(cityInfo.adminCode1);
         this.county(cityInfo.adminName2);
+    }
+};
+
+AddressViewModel.prototype.zipChanged = function(value) {
+    if (this.isLongEnough(value)) {
+        try {
+            this.fetch(value).done(this.fetched.bind(this));
+        }
+        catch(e) {
+            console.log("Invalid zip code: " + value);
+        }
     }
 };
 
