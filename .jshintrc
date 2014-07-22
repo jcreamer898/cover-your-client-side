@@ -11,6 +11,7 @@
     "boss": true,
     "eqnull": true,
     "globals": {
+        "console": true,
         "jQuery": true,
         "ko": true,
         "$": true,
