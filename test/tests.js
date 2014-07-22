@@ -33,14 +33,13 @@ test("should check the length of zip codes", function() {
 });
 
 test("should search for zip codes if a zip is valid", function() {
-    var vm = new AddressViewModel(),
-        promise;
+    var vm = new AddressViewModel();
 
     sinon.stub(jQuery, "ajax").returns({
         done: $.noop
     });
 
-    promise = vm.fetch(37179).done;
+    vm.fetch(37179);
 
     ok(jQuery.ajax.calledOnce, "should try to fetch");
 
