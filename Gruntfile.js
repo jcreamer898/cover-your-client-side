@@ -30,7 +30,7 @@ module.exports = function(grunt) {
         watch: {
             qunit: {
                 files: ['test/*.js', 'js/app/**/*.js'],
-                tasks: ['jshint', 'blanket_qunit']
+                tasks: ['blanket_qunit']
             }
         }
     });
