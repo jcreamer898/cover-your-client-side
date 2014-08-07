@@ -1,32 +1,53 @@
+<!DOCTYPE html>
 <html>
     <head>
         <title>Zip Finder Demo</title>
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/css/bootstrap.css" type="text/css" />
     </head>
     <body>
-        <form>
-            <div data-bind="with: address">
-                <label>Zip</label>
-                <input type="text" name="zip" data-bind="value: zip" />
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>Zip Code Checker</h1>
 
-                <fieldgroup data-bind="visible: isLocated">
-                    <label>City</label>
-                    <input type="text" name="city" data-bind="value: city" />
+                    <form class="form">
+                        <div data-bind="with: address">
+                            <div class="form-group">
+                                <label>Zip</label>
+                                <input type="text" class="form-control" name="zip" data-bind="value: zip, valueUpdate: 'keyup'" />
+                            </div>
 
-                    <label>State</label>
-                    <input type="text" name="state" data-bind="value: state" />
+                            <fieldgroup data-bind="visible: isLocated">
+                                <div class="form-group">
+                                    <label>City</label>
+                                    <input type="text" class="form-control" name="city" data-bind="value: city" />    
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>State</label>
+                                    <input type="text" class="form-control" name="state" data-bind="value: state" />
+                                </div>
 
-                    <label>County</label>
-                    <input type="text" name="county" data-bind="value: county" />
+                                <div class="form-group">
+                                    <label>County</label>
+                                    <input type="text" class="form-control" name="county" data-bind="value: county" />
+                                </div>
 
-                    <input type="reset" name="reset" value="Reset" data-bind="click: clear" />
-                </fieldgroup>
+                                <div class="form-group">
+                                    <input class="btn btn-danger" class="form-control" type="reset" name="reset" value="Reset" data-bind="click: clear" />    
+                                </div>
+                                
+                            </fieldgroup>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </form>
+        </div>
 
-        <script src="js/lib/sinonjs/sinon.js"></script>
-        <script src="js/lib/jquery/dist/jquery.js"></script>
-        <script src="js/lib/knockout.js/knockout.js"></script>
-        <script src="js/app/zip.done.js" data-cover></script>
-        <script src="js/app/app.js" data-cover></script>
+        <script src="/js/lib/jquery/dist/jquery.js"></script>
+        <script src="/js/lib/knockout.js/knockout.js"></script>
+        <script src="/http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <script src="/js/app/zip.done.js" data-cover></script>
+        <script src="/js/app/app.js" data-cover></script>
     </body>
 </html>
