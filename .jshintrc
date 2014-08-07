@@ -7,7 +7,7 @@
     "noarg": true,
     "sub": true,
     "undef": true,
-    "unused": true,
+    "unused": false,
     "boss": true,
     "eqnull": true,
     "globals": {
@@ -19,6 +19,7 @@
         "module": true,
         "ok": true,
         "equal": true,
-        "sinon": true
+        "sinon": true,
+        "AddressViewModel": true
     }
 }

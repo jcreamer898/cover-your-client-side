@@ -51,7 +51,7 @@ test("should not search for zip codes if a zip is invalid", function() {
 
     throws(function() { 
         vm.fetch("abc"); 
-    }, "an exception will be thrown when there is no zip passed to fetch");
+    });
 });
 
 asyncTest("should set the city state and county with a valid zip", function() {
